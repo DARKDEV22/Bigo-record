@@ -9,4 +9,4 @@ Recording Bigo live stream but just use command line, don't have to open real st
 # How to use
 - main.exe for recording
 - concat.exe for concatinate .ts files
-- Can you as many window as you want.
+- You can use as many window as you want for recording.
