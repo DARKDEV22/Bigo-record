@@ -50,9 +50,8 @@ fn process_user_ids() -> io::Result<()> {
 async fn main() -> io::Result<()> {
     loop {
         process_user_ids()?;
-
-        // Sleep for 11:20 minutes 
-        let interval = Duration::from_secs(680);
+        // wait for next loop
+        let interval = Duration::from_secs(5);
         time::sleep(interval).await;
     }
 }

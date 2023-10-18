@@ -91,7 +91,7 @@ async fn main() {
     let user_id: String;
 
     if args.len() != 2 {
-        // let user_id_input = "859931431".to_string();
+        // let user_id_input = "263014976".to_string();
         let mut user_id_input = String::new();
         println!("\nEnter bigo user_id_input :");
         io::stdin().read_line(&mut user_id_input).expect("Failed to read");
@@ -135,7 +135,8 @@ async fn main() {
     // download section
     println!("\n[INFO] Ctrl + C : stop recording.");
     println!("\nRecording: {}", user_id);
-    while start_time.elapsed().unwrap() < max_timing {
+    println!("{:?}", start_time.elapsed().unwrap());
+    loop {
         match get_m3u8(user_id) {
             Ok(response) => {
                 // get m3u8_url 
@@ -180,6 +181,9 @@ async fn main() {
                             let may_be_next_id: u8 = 15;
                             let mut n_videos = 1;
                             while  n_not_complete <= limit_download_attempt {
+                                if start_time.elapsed().unwrap() > max_timing {
+                                    break;
+                                }
                                 let download_url = format!("{}/{}_{}&{}&0.ts", base_url, base_nums_vec[0], start_id, base_nums_vec[1]);
                                 let save_path = format!("{}/{}.ts", user_id, start_id + previous_id);
                                 println!("id: {}: {} | {}", user_id, start_id, n_videos);
@@ -187,6 +191,7 @@ async fn main() {
                                     println!(" -- estimate {:.2} minutes.", (n_videos*2) as f32/60.0);
                                 }
                                 let result = download_file(&download_url, &save_path).await;
+
                                 // check is valid file ?
                                 let file_size = match result {
                                     Ok(size) => size,
@@ -212,6 +217,9 @@ async fn main() {
                                 
                             }
                             println!("[LIVE] : {:?}", start_time.elapsed().unwrap());
+                            if start_time.elapsed().unwrap() > max_timing {
+                                    break;
+                            }
 
                         } else {
                             println!("Conversion failed");
